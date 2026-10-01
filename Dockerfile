@@ -43,7 +43,4 @@ RUN mkdir -p database storage/framework/cache/data storage/framework/sessions st
     touch database/database.sqlite && \
     chmod -R 777 storage database bootstrap/cache
 
-ENV PORT=8080
-EXPOSE 8080
-
 CMD ["bash", "start.sh"]
