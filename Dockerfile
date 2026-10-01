@@ -39,10 +39,11 @@ RUN npm install
 RUN npm run build
 
 # Setup directories and permissions
-RUN mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs && \
+RUN mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache && \
     touch database/database.sqlite && \
     chmod -R 777 storage database bootstrap/cache
 
-EXPOSE 8088
+ENV PORT=8080
+EXPOSE 8080
 
 CMD ["bash", "start.sh"]

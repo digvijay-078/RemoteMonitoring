@@ -53,21 +53,24 @@ php artisan db:seed --class=AdminUserSeeder --force --no-interaction || true
 
 # 4. Start Laravel Backend Service on 0.0.0.0:8000
 echo "-> Starting Laravel HTTP server with 4 workers on 0.0.0.0:8000..."
-php artisan serve --host=0.0.0.0 --port=8000 &
+php artisan serve --host=0.0.0.0 --port=8000 > storage/logs/laravel_serve.log 2>&1 &
 
 # 5. Start Laravel Reverb WebSocket Server on 0.0.0.0:8081
 echo "-> Starting Laravel Reverb WebSockets on 0.0.0.0:8081..."
-php artisan reverb:start --host=0.0.0.0 --port=8081 &
+php artisan reverb:start --host=0.0.0.0 --port=8081 > storage/logs/reverb.log 2>&1 &
 
 # 6. Start Python Stream Hub Engine on 0.0.0.0:8085
 if [ -f tools/server_stream_hub.py ]; then
     echo "-> Starting Python Stream Hub on 0.0.0.0:8085..."
-    python3 tools/server_stream_hub.py &
+    python3 tools/server_stream_hub.py > storage/logs/stream_hub.log 2>&1 &
 fi
 
 # Wait 3 seconds for background processes to bind
 sleep 3
 
+# Verify Laravel is running locally
+curl -s http://127.0.0.1:8000/ > /dev/null && echo "-> [OK] Laravel backend is responding on port 8000" || echo "-> [WAIT] Laravel backend starting up..."
+
 # 7. Start Unified Ingress Proxy on $PORT (Public Entrypoint)
-echo "-> Starting Unified Ingress Proxy on port ${PORT:-8088}..."
+echo "-> Starting Unified Ingress Proxy on port ${PORT:-8080}..."
 exec node tools/unified_proxy.cjs
