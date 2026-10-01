@@ -1,0 +1,23 @@
+{
+  "benchmark_name": "RemoteMonitor Multi-Viewer Performance Benchmark",
+  "single_viewer": {
+    "fps": 19.4,
+    "audio_packet_rate": 50.0,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "agent_cpu_percent": 101.8,
+    "agent_ram_mb": 222.25
+  },
+  "dual_viewers": {
+    "viewer1_fps": 4.6,
+    "viewer2_fps": 14.1,
+    "agent_cpu_percent": 158.0,
+    "agent_ram_mb": 305.9,
+    "cpu_delta_percent": 56.1,
+    "ram_delta_mb": 83.65
+  },
+  "fanout_efficiency": "DXGI desktop capture frame shared in memory across RTCPeerConnections with independent encoder threads.",
+  "passed": false
+}

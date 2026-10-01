@@ -1,0 +1,23 @@
+{
+  "name": "RemoteMonitor Display Client",
+  "short_name": "RemoteMonitor",
+  "start_url": "/tablet",
+  "scope": "/tablet",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#020617",
+  "theme_color": "#0f172a",
+  "description": "Dedicated Remote Monitoring Client for Android Tablets",
+  "icons": [
+    {
+      "src": "/tablet/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/tablet/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "test_name": "RemoteMonitor 24x7 Soak Test",
+  "duration_seconds": 314.9916818141937,
+  "total_video_frames": 6184,
+  "total_audio_frames": 15740,
+  "average_fps": 19.6,
+  "initial_ram_mb": 223.11,
+  "final_ram_mb": 226.75,
+  "peak_ram_mb": 226.76,
+  "average_ram_mb": 225.56,
+  "ram_growth_mb": 3.64,
+  "ram_growth_per_min": 0.693,
+  "average_cpu_percent": 112.3,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "pixel_std_dev": 31.32,
+  "samples": [
+    {
+      "timestamp": 1789026597.9433486,
+      "elapsed_seconds": 15.0,
+      "agent_ram_mb": 223.11,
+      "agent_cpu_percent": 0.0,
+      "video_frames_total": 291,
+      "audio_frames_total": 741,
+      "interval_fps": 19.4,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026612.9316015,
+      "elapsed_seconds": 30.0,
+      "agent_ram_mb": 226.46,
+      "agent_cpu_percent": 117.5,
+      "video_frames_total": 586,
+      "audio_frames_total": 1490,
+      "interval_fps": 19.7,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026627.9462264,
+      "elapsed_seconds": 45.0,
+      "agent_ram_mb": 226.32,
+      "agent_cpu_percent": 115.4,
+      "video_frames_total": 891,
+      "audio_frames_total": 2241,
+      "interval_fps": 20.3,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026642.9466045,
+      "elapsed_seconds": 60.0,
+      "agent_ram_mb": 226.45,
+      "agent_cpu_percent": 119.0,
+      "video_frames_total": 1185,
+      "audio_frames_total": 2991,
+      "interval_fps": 19.6,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026657.945636,
+      "elapsed_seconds": 75.0,
+      "agent_ram_mb": 226.52,
+      "agent_cpu_percent": 116.9,
+      "video_frames_total": 1464,
+      "audio_frames_total": 3741,
+      "interval_fps": 18.6,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026672.958312,
+      "elapsed_seconds": 90.0,
+      "agent_ram_mb": 226.61,
+      "agent_cpu_percent": 124.3,
+      "video_frames_total": 1735,
+      "audio_frames_total": 4492,
+      "interval_fps": 18.1,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026687.9441266,
+      "elapsed_seconds": 105.0,
+      "agent_ram_mb": 226.65,
+      "agent_cpu_percent": 116.1,
+      "video_frames_total": 2025,
+      "audio_frames_total": 5241,
+      "interval_fps": 19.4,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026702.9312158,
+      "elapsed_seconds": 120.0,
+      "agent_ram_mb": 220.69,
+      "agent_cpu_percent": 114.7,
+      "video_frames_total": 2320,
+      "audio_frames_total": 5992,
+      "interval_fps": 19.7,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026717.9519954,
+      "elapsed_seconds": 135.0,
+      "agent_ram_mb": 220.69,
+      "agent_cpu_percent": 123.1,
+      "video_frames_total": 2616,
+      "audio_frames_total": 6742,
+      "interval_fps": 19.7,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026732.9471977,
+      "elapsed_seconds": 150.0,
+      "agent_ram_mb": 226.7,
+      "agent_cpu_percent": 116.5,
+      "video_frames_total": 2916,
+      "audio_frames_total": 7491,
+      "interval_fps": 20.0,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026747.9511924,
+      "elapsed_seconds": 165.0,
+      "agent_ram_mb": 226.65,
+      "agent_cpu_percent": 115.8,
+      "video_frames_total": 3213,
+      "audio_frames_total": 8241,
+      "interval_fps": 19.8,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026762.9417477,
+      "elapsed_seconds": 180.0,
+      "agent_ram_mb": 226.66,
+      "agent_cpu_percent": 112.0,
+      "video_frames_total": 3511,
+      "audio_frames_total": 8991,
+      "interval_fps": 19.9,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026777.9277344,
+      "elapsed_seconds": 195.0,
+      "agent_ram_mb": 225.95,
+      "agent_cpu_percent": 113.8,
+      "video_frames_total": 3809,
+      "audio_frames_total": 9740,
+      "interval_fps": 19.9,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026792.936518,
+      "elapsed_seconds": 210.0,
+      "agent_ram_mb": 220.99,
+      "agent_cpu_percent": 122.9,
+      "video_frames_total": 4102,
+      "audio_frames_total": 10492,
+      "interval_fps": 19.5,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026807.9424894,
+      "elapsed_seconds": 225.0,
+      "agent_ram_mb": 226.62,
+      "agent_cpu_percent": 112.7,
+      "video_frames_total": 4399,
+      "audio_frames_total": 11241,
+      "interval_fps": 19.8,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026822.9337556,
+      "elapsed_seconds": 240.0,
+      "agent_ram_mb": 226.71,
+      "agent_cpu_percent": 117.3,
+      "video_frames_total": 4696,
+      "audio_frames_total": 11991,
+      "interval_fps": 19.8,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026837.9427571,
+      "elapsed_seconds": 255.0,
+      "agent_ram_mb": 226.67,
+      "agent_cpu_percent": 124.1,
+      "video_frames_total": 4996,
+      "audio_frames_total": 12741,
+      "interval_fps": 20.0,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026852.941577,
+      "elapsed_seconds": 270.0,
+      "agent_ram_mb": 226.03,
+      "agent_cpu_percent": 117.6,
+      "video_frames_total": 5292,
+      "audio_frames_total": 13491,
+      "interval_fps": 19.7,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026867.9416866,
+      "elapsed_seconds": 285.0,
+      "agent_ram_mb": 226.75,
+      "agent_cpu_percent": 125.7,
+      "video_frames_total": 5590,
+      "audio_frames_total": 14241,
+      "interval_fps": 19.9,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026882.9288042,
+      "elapsed_seconds": 300.0,
+      "agent_ram_mb": 226.76,
+      "agent_cpu_percent": 118.1,
+      "video_frames_total": 5886,
+      "audio_frames_total": 14990,
+      "interval_fps": 19.8,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    },
+    {
+      "timestamp": 1789026897.9289722,
+      "elapsed_seconds": 315.0,
+      "agent_ram_mb": 226.75,
+      "agent_cpu_percent": 114.5,
+      "video_frames_total": 6184,
+      "audio_frames_total": 15740,
+      "interval_fps": 19.9,
+      "connection_state": "connected",
+      "ice_state": "completed"
+    }
+  ],
+  "passed": true
+}
