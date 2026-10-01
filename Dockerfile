@@ -19,8 +19,8 @@ RUN apt-get update && apt-get install -y \
     dos2unix \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_sqlite mbstring bcmath
+# Install PHP extensions including pcntl & posix for Reverb WebSockets
+RUN docker-php-ext-install pdo pdo_sqlite mbstring bcmath pcntl posix
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
