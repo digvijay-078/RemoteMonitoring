@@ -1,14 +1,30 @@
 [phases.setup]
-nixPkgs = ['php82', 'php82Packages.composer', 'nodejs_20', 'python3', 'python3Packages.pip', 'python3Packages.pillow']
+nixPkgs = [
+    'php82',
+    'php82Extensions.pdo_sqlite',
+    'php82Extensions.sqlite3',
+    'php82Extensions.pdo_mysql',
+    'php82Extensions.mbstring',
+    'php82Extensions.bcmath',
+    'php82Extensions.pcntl',
+    'php82Extensions.posix',
+    'php82Extensions.curl',
+    'php82Extensions.xml',
+    'php82Packages.composer',
+    'nodejs_20',
+    'python3',
+    'python3Packages.pip',
+    'python3Packages.pillow'
+]
 
 [phases.build]
 cmds = [
     'composer install --no-dev --optimize-autoloader',
     'npm install',
     'npm run build',
-    'mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs',
+    'mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache',
     'touch database/database.sqlite',
-    'chmod -R 777 storage database'
+    'chmod -R 777 storage database bootstrap/cache'
 ]
 
 [start]
