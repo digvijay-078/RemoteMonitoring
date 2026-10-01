@@ -300,7 +300,7 @@ server.on('clientError', (err, socket) => {
     }
 });
 
-const PORT = 8088;
+const PORT = process.env.PORT || 8088;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`[Unified Ingress Proxy] Listening on http://0.0.0.0:${PORT}`);
     console.log(`  -> Static assets served directly from public/`);
