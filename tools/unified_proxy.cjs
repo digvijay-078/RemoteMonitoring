@@ -37,6 +37,7 @@ process.on('unhandledRejection', (reason) => {
 
 const proxyHttp = httpProxy.createProxyServer({
     target: 'http://127.0.0.1:8000',
+    changeOrigin: true,
     xfwd: true,
     ws: false,
     timeout: 30000,
@@ -45,6 +46,7 @@ const proxyHttp = httpProxy.createProxyServer({
 
 const proxyReverb = httpProxy.createProxyServer({
     target: 'http://127.0.0.1:8081',
+    changeOrigin: true,
     xfwd: true,
     ws: true,
     timeout: 30000,
@@ -53,6 +55,7 @@ const proxyReverb = httpProxy.createProxyServer({
 
 const proxyStream = httpProxy.createProxyServer({
     target: 'http://127.0.0.1:8085',
+    changeOrigin: true,
     xfwd: true,
     ws: true,
     timeout: 30000,
@@ -61,17 +64,17 @@ const proxyStream = httpProxy.createProxyServer({
 
 proxyHttp.on('error', (err, req, res) => {
     if (err.code !== 'ECONNRESET') {
-        console.warn('[Proxy HTTP Error]:', err.message);
+        console.warn('[Proxy HTTP Error]:', err.code, err.message, req ? req.url : '');
     }
     if (res && !res.headersSent && typeof res.writeHead === 'function') {
         res.writeHead(502, { 'Content-Type': 'text/plain' });
-        res.end('Bad Gateway: Laravel service temporarily unavailable');
+        res.end('Bad Gateway: Laravel service initializing, please refresh in 3 seconds');
     }
 });
 
 proxyReverb.on('error', (err, req, res) => {
     if (err.code !== 'ECONNRESET') {
-        console.warn('[Proxy Reverb Error]:', err.message);
+        console.warn('[Proxy Reverb Error]:', err.code, err.message);
     }
     if (res && !res.headersSent && typeof res.writeHead === 'function') {
         res.writeHead(502, { 'Content-Type': 'text/plain' });
@@ -81,7 +84,7 @@ proxyReverb.on('error', (err, req, res) => {
 
 proxyStream.on('error', (err, req, res) => {
     if (err.code !== 'ECONNRESET') {
-        console.warn('[Proxy Stream Error]:', err.message);
+        console.warn('[Proxy Stream Error]:', err.code, err.message);
     }
     if (res && !res.headersSent && typeof res.writeHead === 'function') {
         res.writeHead(502, { 'Content-Type': 'text/plain' });
@@ -118,7 +121,8 @@ function handleRealtimeStatusProxy(req, res) {
     realtimeCache.isFetching = true;
     const reqHeaders = Object.assign({}, req.headers, {
         'host': '127.0.0.1:8000',
-        'accept': 'application/json'
+        'x-forwarded-host': req.headers['host'] || '127.0.0.1:8000',
+        'x-forwarded-proto': req.headers['x-forwarded-proto'] || 'http'
     });
 
     const backendReq = http.request({
@@ -127,39 +131,33 @@ function handleRealtimeStatusProxy(req, res) {
         path: req.url,
         method: 'GET',
         headers: reqHeaders,
-        timeout: 8000
+        timeout: 5000
     }, (backendRes) => {
         let body = '';
-        backendRes.on('data', chunk => { body += chunk; });
+        backendRes.on('data', chunk => body += chunk);
         backendRes.on('end', () => {
             realtimeCache.isFetching = false;
-            const isJson = (backendRes.headers['content-type'] || '').includes('json') || body.trim().startsWith('{');
-            if (backendRes.statusCode === 200 && isJson) {
+            if (backendRes.statusCode === 200) {
                 realtimeCache.data = body;
                 realtimeCache.statusCode = 200;
-                realtimeCache.expiresAt = Date.now() + 1500;
+                realtimeCache.expiresAt = Date.now() + 800; // 800ms TTL
             }
 
+            const clientHeaders = Object.assign({}, backendRes.headers, {
+                'X-Proxy-Cache': 'MISS',
+                'Access-Control-Allow-Origin': '*'
+            });
+
             if (!res.headersSent) {
-                res.writeHead(backendRes.statusCode, {
-                    'Content-Type': backendRes.headers['content-type'] || 'application/json',
-                    'Cache-Control': 'no-cache',
-                    'X-Proxy-Cache': 'MISS',
-                    'Access-Control-Allow-Origin': '*'
-                });
+                res.writeHead(backendRes.statusCode, clientHeaders);
                 res.end(body);
             }
 
             while (realtimeCache.waiters.length > 0) {
-                const wRes = realtimeCache.waiters.shift();
-                if (!wRes.headersSent) {
-                    wRes.writeHead(backendRes.statusCode, {
-                        'Content-Type': backendRes.headers['content-type'] || 'application/json',
-                        'Cache-Control': 'no-cache',
-                        'X-Proxy-Cache': 'COALESCED',
-                        'Access-Control-Allow-Origin': '*'
-                    });
-                    wRes.end(body);
+                const waitingRes = realtimeCache.waiters.shift();
+                if (!waitingRes.headersSent) {
+                    waitingRes.writeHead(backendRes.statusCode, clientHeaders);
+                    waitingRes.end(body);
                 }
             }
         });
@@ -167,30 +165,17 @@ function handleRealtimeStatusProxy(req, res) {
 
     backendReq.on('error', (err) => {
         realtimeCache.isFetching = false;
-        if (realtimeCache.data && !res.headersSent) {
-            res.writeHead(200, { 'Content-Type': 'application/json', 'X-Proxy-Cache': 'FALLBACK' });
-            res.end(realtimeCache.data);
-        } else if (!res.headersSent) {
+        if (!res.headersSent) {
             res.writeHead(502, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: err.message, devices: [] }));
+            res.end(JSON.stringify({ error: 'Backend unreachable', details: err.message }));
         }
-
         while (realtimeCache.waiters.length > 0) {
-            const wRes = realtimeCache.waiters.shift();
-            if (!wRes.headersSent) {
-                if (realtimeCache.data) {
-                    wRes.writeHead(200, { 'Content-Type': 'application/json', 'X-Proxy-Cache': 'FALLBACK' });
-                    wRes.end(realtimeCache.data);
-                } else {
-                    wRes.writeHead(502, { 'Content-Type': 'application/json' });
-                    wRes.end(JSON.stringify({ success: false, error: err.message, devices: [] }));
-                }
+            const waitingRes = realtimeCache.waiters.shift();
+            if (!waitingRes.headersSent) {
+                waitingRes.writeHead(502, { 'Content-Type': 'application/json' });
+                waitingRes.end(JSON.stringify({ error: 'Backend unreachable' }));
             }
         }
-    });
-
-    backendReq.on('timeout', () => {
-        backendReq.destroy(new Error('Backend timeout'));
     });
 
     backendReq.end();
@@ -247,7 +232,7 @@ const server = http.createServer((req, res) => {
     res.on('error', () => {});
 
     const host = req.headers['host'] || '';
-    if (host.includes('trycloudflare.com') || host.includes('ngrok') || (req.headers['cf-visitor'] && req.headers['cf-visitor'].includes('https')) || req.headers['x-forwarded-proto'] === 'https') {
+    if (host.includes('railway') || host.includes('trycloudflare.com') || host.includes('ngrok') || (req.headers['cf-visitor'] && req.headers['cf-visitor'].includes('https')) || req.headers['x-forwarded-proto'] === 'https') {
         req.headers['x-forwarded-proto'] = 'https';
         req.headers['x-forwarded-port'] = '443';
         req.headers['x-forwarded-host'] = host;
